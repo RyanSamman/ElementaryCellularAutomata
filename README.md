@@ -2,8 +2,22 @@
 
 A Real-Time implementation of [Wolfram Elementary Cellular Automata](https://mathworld.wolfram.com/ElementaryCellularAutomaton.html)
 
-
 ![Cellular Automata Display](./Images/CellularAutomataShowcase.gif)
+
+# How to install
+
+```
+pip install requirements.txt
+```
+
+or, more preferably,
+
+```
+pipenv shell
+pipenv install
+```
+
+Then you can run
 
 # Explaination
 You have a row of cells, and a cell's state in the next generation is influenced by the state of the surrounding cells and itself.
