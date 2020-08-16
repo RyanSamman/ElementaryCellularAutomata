@@ -128,7 +128,7 @@ class DisplayCellularAutomata:
 		self.window.blit(ruleText, rect)
 
 
-if __name__ == '__main__':
+def start_CellularAutomata():
 	# For the messagebox, to prevent a Tkinter window from popping up
 	root = Tk()
 	root.withdraw()
@@ -138,3 +138,7 @@ if __name__ == '__main__':
 	except Exception as e:
 		messagebox.showerror('ERROR', f'{e.__class__.__name__}: {e}')
 		raise e
+
+
+if __name__ == '__main__':
+	start_CellularAutomata()
