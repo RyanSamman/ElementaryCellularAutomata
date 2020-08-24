@@ -27,10 +27,11 @@ class CellularAutomata:
 
     def applyRule(self):
         newCells = []
-        for i, _ in enumerate(self.cells):
-            left = (i - 1) % self.CELLS_WIDTH
-            right = (i + 1) % self.CELLS_WIDTH
-            newCells.append(self.generateRuleIndex(left, i, right))
+        for currentPosition, _ in enumerate(self.cells):
+            left = (currentPosition - 1) % self.CELLS_WIDTH
+            right = (currentPosition + 1) % self.CELLS_WIDTH
+            newCells.append(self.generateRuleIndex(left, currentPosition, right))
+
         self.cells = newCells
         self.cellsHistory.append(newCells)
         return newCells
