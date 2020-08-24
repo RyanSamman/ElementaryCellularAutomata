@@ -19,10 +19,10 @@ class CellularAutomata:
         self.ruleArray = [self.rule >> i & 1 for i in range(8)]
 
     def generateRuleIndex(self, left, middle, right):
-        index = 0
-        if self.cells[left]:   index ^= 1  # 0b000 -> 0b001
-        if self.cells[middle]: index ^= 2  # 0b000 -> 0b010
-        if self.cells[right]:  index ^= 4  # 0b000 -> 0b100
+        index = 0b000
+        if self.cells[left]:   index ^= 0b001  # 0b000 -> 0b001
+        if self.cells[middle]: index ^= 0b010  # 0b000 -> 0b010
+        if self.cells[right]:  index ^= 0b100  # 0b000 -> 0b100
         return self.ruleArray[index]
 
     def applyRule(self):
