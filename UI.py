@@ -127,12 +127,17 @@ class DisplayCellularAutomata:
 
 
 def start_CellularAutomata():
-	# For the messagebox, to prevent a Tkinter window from popping up
-	root = Tk()
-	root.withdraw()
-	
+	SCALE = 1; # You can play with this to get smaller cells for the same screen width, from 1 to 20 (Although it gets much slower)
+
+	defaults = {
+			'width': 61 * SCALE,
+			'height': 40 * SCALE,
+			'rule': 126,
+			'cellSize': 20 // SCALE,
+	}
+
 	try:
-		DisplayCellularAutomata(width=51, height=40, rule=126)
+		DisplayCellularAutomata(**defaults)
 	except Exception as e:
 		messagebox.showerror('ERROR', f'{e.__class__.__name__}: {e}')
 		raise e
