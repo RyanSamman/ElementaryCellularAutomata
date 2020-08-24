@@ -55,12 +55,10 @@ class DisplayCellularAutomata:
 		self.redraw()  # Redraw window to display the next row
 
 	def redraw(self):
-		self.window.fill((255, 255, 255))
 		self.box.blit()
 		self.box.update()
-		pygame.draw.rect(self.window, (255, 255, 255), (50, 75, 300, 300))
-		self.drawCells()
 		self.displayRule()
+		self.drawCells()
 		pygame.display.update()
 
 	def cellPos(self, y, x):
