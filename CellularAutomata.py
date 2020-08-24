@@ -43,6 +43,7 @@ class CellularAutomata:
 
 
 if __name__ == "__main__":
+    # Testing in the CLI, the main entrypoint is UI.py
     inputRule = randrange(0, 256)  # int(input("Enter a rule: "))
     print(f"Rule {inputRule}")
     width = 61
