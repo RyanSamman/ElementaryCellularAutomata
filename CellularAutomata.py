@@ -9,8 +9,8 @@ class CellularAutomata:
             initialState = [0] * sides + [1] * middle + [0] * sides
 
         self.CELLS_WIDTH = width
-        self.cellsHistory = [[*initialState]]
-        self.cells = initialState[:]  # Copy the array
+        self.cellsHistory = [[*initialState]]  # Record the history of the cells
+        self.cells = initialState
         self.rule = rule
         self.updateRuleArray()
 
