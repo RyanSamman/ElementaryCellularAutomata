@@ -6,12 +6,16 @@ from tkinter import simpledialog
 from CellularAutomata import CellularAutomata
 
 class DisplayCellularAutomata:
-	def __init__(self, width, height, rule, initialState=None):
+	def __init__(self, width, height, rule, cellSize, initialState=None):
 		pygame.init()
 		pygame.font.init()
 
-		self.MENU_HEIGHT = 65
-		self.CELL_SIZE = 20
+		# For the messagebox, to prevent a Tkinter window from popping up
+		self.root = Tk()
+		self.root.withdraw()
+
+		self.MENU_HEIGHT = 75
+		self.CELL_SIZE = cellSize
 		self.CELLS_HEIGHT = height
 		self.CELLS_WIDTH = width
 		self.rule = rule
@@ -19,8 +23,13 @@ class DisplayCellularAutomata:
 		self.WINDOW_WIDTH = self.CELLS_WIDTH * self.CELL_SIZE
 		self.WINDOW_HEIGHT = self.MENU_HEIGHT + self.CELLS_HEIGHT * self.CELL_SIZE
 		self.window = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
-		self.Font = pygame.font.SysFont('Calibri', 35)
+		self.Font = pygame.font.SysFont('Calibri', size=35)
 		self.clock = pygame.time.Clock()
+
+		self.COLOR = {
+			'WHITE': (255, 255, 255),
+			'BLACK': (000, 000, 000)
+		}
 
 		pygame.display.set_caption('Elementary Cellular Automata')
 
@@ -71,27 +80,34 @@ class DisplayCellularAutomata:
 				if cells[y][x] != 1: continue
 				pygame.draw.rect(
 					self.window, 
-					(0, 0, 0), 
+					self.COLOR['BLACK'], 
 					(x * self.CELL_SIZE, y * self.CELL_SIZE + self.MENU_HEIGHT, self.CELL_SIZE, self.CELL_SIZE)
 				)
 	
 	def setupUI(self):
-		# runButton = thorpy.make_button('  Run  ', func=lambda: self.runCells())
-		# runButton.set_main_color((145, 195, 220))
+		BUTTON_SIZE = (120, 30) # Default Button Size, 120px wide and 30px high
 
-		randomizeCellsButton = thorpy.make_button('Randomize Cells', func=lambda: self.randomizeCells())
-		resetCellsButton = thorpy.make_button("    Reset Cells    ", func=lambda: self.resetCells())
-		cell_Es = [randomizeCellsButton, resetCellsButton]
+		# Cell Buttons
+		randomizeCellsButton = thorpy.make_button('Randomize Cells', func=self.randomizeCells)
+		randomizeCellsButton.set_size(BUTTON_SIZE)
 
-		randomizeRuleButton = thorpy.make_button('Randomize Rule', func=lambda: self.randomizeRule())
-		setRulebutton = thorpy.make_button("     Set Rule     ", func=lambda: self.setRule(50))
+		resetCellsButton = thorpy.make_button('Reset Cells', func=self.resetCells)
+		resetCellsButton.set_size(BUTTON_SIZE)
+		
+		cellButtons = [randomizeCellsButton, resetCellsButton]
 
-		rule_Es = [randomizeRuleButton, setRulebutton]
+		# Rule Buttons
+		randomizeRuleButton = thorpy.make_button('Randomize Rule', func=self.randomizeRule)
+		randomizeRuleButton.set_size(BUTTON_SIZE)
 
-		self.box = thorpy.Background(color=(255, 255, 255),elements= cell_Es + rule_Es)
-		thorpy.store(self.box, elements=cell_Es, align="left", x=0, y=0)
-		thorpy.store(self.box, elements=rule_Es, align="left", x=120, y=0)
-		# thorpy.store(self.box, elements=[runButton], y=0, x=(self.WINDOW_WIDTH - 30))
+		setRulebutton = thorpy.make_button("Set Rule", func=self.setRule)
+		setRulebutton.set_size(BUTTON_SIZE)
+
+		ruleButtons = [randomizeRuleButton, setRulebutton]
+
+		self.box = thorpy.Background(color=self.COLOR['WHITE'], elements= cellButtons + ruleButtons)
+		thorpy.store(self.box, elements=cellButtons, align="left", x=0, y=0)
+		thorpy.store(self.box, elements=ruleButtons, align="right", x=self.WINDOW_WIDTH, y=0)
 		self.menu = thorpy.Menu(self.box)
 
 		for element in self.menu.get_population():
@@ -111,18 +127,18 @@ class DisplayCellularAutomata:
 		self.runCells()
 
 	def randomizeRule(self):
-		self.rule = randrange(0, 256)
+		self.rule = randrange(0, 256) # Random rule from 0 to 255 (8 bit value/unsigned char / uint8)
 		self.runCells()
 	
-	def setRule(self, newRule):
-		answer = simpledialog.askinteger("Enter a rule", "Enter a rule from 0 to 255", parent=root, minvalue=0, maxvalue=255)
+	def setRule(self):
+		answer = simpledialog.askinteger("Enter a rule", "Enter a rule from 0 to 255", parent=self.root, minvalue=0, maxvalue=255)
 		if answer is None: return
 		self.rule = answer
 		self.runCells()
 
 	def displayRule(self):
-		ruleText = self.Font.render(f"Rule {self.rule}", True, (0, 0, 0))
-		rect = ruleText.get_rect(center=(self.WINDOW_WIDTH // 2, 20))
+		ruleText = self.Font.render(f"Rule {self.rule}", True, self.COLOR['BLACK'])
+		rect = ruleText.get_rect(center=(self.WINDOW_WIDTH // 2, self.MENU_HEIGHT // 2))
 		self.window.blit(ruleText, rect)
 
 
